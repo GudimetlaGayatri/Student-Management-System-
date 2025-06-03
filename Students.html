@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Students</title>
+</head>
+<body>
+<h1>Student List</h1>
+<form th:action="@{/students}" method="get">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by name or class"/>
+    <button type="submit">Search</button>
+</form>
+<a th:href="@{/students/new}">Add Student</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th><th>Name</th><th>Age</th><th>Class</th><th>Email</th><th>Address</th><th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students.content}">
+        <td th:text="${student.studentId}"/>
+        <td th:text="${student.name}"/>
+        <td th:text="${student.age}"/>
+        <td th:text="${student.studentClass}"/>
+        <td th:text="${student.email}"/>
+        <td th:text="${student.address}"/>
+        <td>
+            <a th:href="@{/students/edit/{id}(id=${student.studentId})}">Edit</a>
+            <a th:href="@{/students/delete/{id}(id=${student.studentId})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <span th:text="'Page ' + ${students.number + 1} + ' of ' + ${students.totalPages}"/>
+    <a th:if="${students.hasPrevious()}" th:href="@{/students(page=${students.number - 1}, keyword=${keyword})}">Previous</a>
+    <a th:if="${students.hasNext()}" th:href="@{/students(page=${students.number + 1}, keyword=${keyword})}">Next</a>
+</div>
+</body>
+</html>
+
